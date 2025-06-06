@@ -13,15 +13,17 @@ struct PlaylistListView: View {
     @EnvironmentObject var viewModel: PlaylistViewModel
 
     var body: some View {
-        List {
-            ForEach(viewModel.playlists(for: mood)) { playlist in
-                VStack(alignment: .leading) {
-                    Text(playlist.title)
-                        .font(.headline)
-                    Text(playlist.artist)
-                        .font(.subheadline)
-                        .foregroundColor(.gray)
+        ZStack {
+            mood.color.opacity(0.05).ignoresSafeArea()
+            
+            ScrollView {
+                VStack(spacing: 16) {
+                    ForEach(viewModel.playlists(for: mood)) { playlist in
+                        PlaylistCardView(playlist: playlist)
+                            .padding(.horizontal)
+                    }
                 }
+                .padding(.top)
             }
         }
         .navigationTitle("\(mood.emoji) \(mood.name)")
